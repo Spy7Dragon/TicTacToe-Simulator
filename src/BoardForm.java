@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class BoardForm {
 	static JButton btnTopLeft;
@@ -60,7 +61,8 @@ public class BoardForm {
 
 	public void stopAndCheck()
 	{
-		if (theBoard.checkForWinner() == '\0'){
+		char check = theBoard.checkForWinner();
+		if (check == '\0'){
 			if (!playerTurn){
 				label.setText("The computer is taking its turn");
 				Node thePicked = theBoard.computerMove();
@@ -69,8 +71,13 @@ public class BoardForm {
 				//label.setText("The board has changed");
 				setXButton(thePicked.getX(), thePicked.getY());
 				//label.setText(theBoard.toString());
-				playerTurn = true;
+				check = theBoard.checkForWinner();
 			}
+		}
+		else if(check == 'N')
+		{
+			label.setText("Tie");
+			btnRestart.setEnabled(true);
 		}
 		else
 		{
@@ -78,6 +85,14 @@ public class BoardForm {
 			label.setText(theBoard.checkForWinner() + " is the winner!");
 			//set restart button to true
 			btnRestart.setEnabled(true);
+		}
+		if (check == '\0')
+		{
+			playerTurn = true;
+		}
+		else if (!btnRestart.isEnabled())
+		{
+			stopAndCheck();
 		}
 	}
 	public static void setXButton(int x, int y)
@@ -129,6 +144,7 @@ public class BoardForm {
 		frame.getContentPane().setLayout(null);
 		
 		btnTopLeft = new JButton("");
+		btnTopLeft.setFont(new Font("Times New Roman", Font.BOLD, 75));
 		btnTopLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (theBoard.setElement('O',0,0) && playerTurn == true){
@@ -142,6 +158,7 @@ public class BoardForm {
 		frame.getContentPane().add(btnTopLeft);
 		
 		btnTopCenter = new JButton("");
+		btnTopCenter.setFont(new Font("Times New Roman", Font.BOLD, 75));
 		btnTopCenter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (theBoard.setElement('O',0,1) && playerTurn == true){
@@ -155,6 +172,7 @@ public class BoardForm {
 		frame.getContentPane().add(btnTopCenter);
 		
 		btnTopRight = new JButton("");
+		btnTopRight.setFont(new Font("Times New Roman", Font.BOLD, 75));
 		btnTopRight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (theBoard.setElement('O',0,2) && playerTurn == true){
@@ -168,6 +186,7 @@ public class BoardForm {
 		frame.getContentPane().add(btnTopRight);
 		
 		btnMiddleLeft = new JButton("");
+		btnMiddleLeft.setFont(new Font("Times New Roman", Font.BOLD, 75));
 		btnMiddleLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (theBoard.setElement('O',1,0) && playerTurn == true){
@@ -181,6 +200,7 @@ public class BoardForm {
 		frame.getContentPane().add(btnMiddleLeft);
 		
 		btnMiddleCenter = new JButton("");
+		btnMiddleCenter.setFont(new Font("Times New Roman", Font.BOLD, 75));
 		btnMiddleCenter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (theBoard.setElement('O',1,1) && playerTurn == true){
@@ -194,6 +214,7 @@ public class BoardForm {
 		frame.getContentPane().add(btnMiddleCenter);
 		
 		btnMiddleRight = new JButton("");
+		btnMiddleRight.setFont(new Font("Times New Roman", Font.BOLD, 75));
 		btnMiddleRight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (theBoard.setElement('O',1,2) && playerTurn == true){
@@ -207,6 +228,7 @@ public class BoardForm {
 		frame.getContentPane().add(btnMiddleRight);
 		
 		btnBottomLeft = new JButton("");
+		btnBottomLeft.setFont(new Font("Times New Roman", Font.BOLD, 75));
 		btnBottomLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (theBoard.setElement('O',2,0) && playerTurn == true){
@@ -220,6 +242,7 @@ public class BoardForm {
 		frame.getContentPane().add(btnBottomLeft);
 		
 		btnBottomCenter = new JButton("");
+		btnBottomCenter.setFont(new Font("Times New Roman", Font.BOLD, 75));
 		btnBottomCenter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (theBoard.setElement('O',2,1) && playerTurn == true){
@@ -233,6 +256,7 @@ public class BoardForm {
 		frame.getContentPane().add(btnBottomCenter);
 		
 		btnBottomRight = new JButton("");
+		btnBottomRight.setFont(new Font("Times New Roman", Font.BOLD, 75));
 		btnBottomRight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (theBoard.setElement('O',2,2) && playerTurn == true){
@@ -246,6 +270,13 @@ public class BoardForm {
 		frame.getContentPane().add(btnBottomRight);
 		
 		btnRestart = new JButton("Restart");
+		btnRestart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String[] args = new String[2];
+				frame.dispose();
+				main(args);
+			}
+		});
 		btnRestart.setEnabled(false);
 		btnRestart.setBounds(10, 377, 89, 23);
 		frame.getContentPane().add(btnRestart);

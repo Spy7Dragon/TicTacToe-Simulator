@@ -64,6 +64,21 @@ public class Board {
 	
 	public char checkForWinner()
 	{
+		boolean elementsLeft = false;
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (getElement(i,j) == ' ')
+				{
+					elementsLeft= true;
+				}
+			}
+		}
+		if (!elementsLeft)
+		{
+			return 'N';
+		}
 		if (getElement(0,0) != ' ' && getElement(0,0) == getElement(0,1) && getElement(0,1) == getElement(0,2)){
 			return getElement(0,0);
 		}
@@ -94,15 +109,54 @@ public class Board {
 	public Node computerMove()
 	{
 		//check for O on board
-		int highest = 0;
 		NodeArray blocks = new NodeArray();
 		
-		Node emptyOne = null;
-		Node emptyTwo = null;
-		for (int i = 0; i < 8; i++)
+		Node emptyOne = new Node();
+		Node emptyTwo = new Node();
+		boolean found = false;
+		Node picked = new Node();
+		int current = 0;
+		Node[] temp = new Node[3];
+		//check for computer win conditions
+		
+		for (int i = 0; i < 8 && !found; i++)
 		{
-			int current = 0;
-			Node[] temp = winConditions.get(i);
+			current = 0;
+			temp = winConditions.get(i);
+			System.out.println("The win condition being evaluated is ");
+			for (int r = 0; r < temp.length; r++){
+				System.out.print(temp[r] + " ");
+			}
+			System.out.println();
+			
+			emptyOne = null;
+			for (int j = 0; j < 3; j++)
+			{
+				int x = temp[j].getX();
+				int y = temp[j].getY();
+				if (getElement(x,y) == 'X')
+				{
+					current++;
+				}
+				else
+				{
+					if (emptyOne == null){
+						emptyOne = temp[j];
+					}
+				}	
+			}
+			if (current == 2 && getElement(emptyOne.getX(), emptyOne.getY()) == ' ')
+			{
+				picked = emptyOne;
+				found = true;
+			}
+		}
+		
+		// check for human player win conditions
+		for (int i = 0; i < 8 && !found; i++)
+		{
+			current = 0;
+			temp = winConditions.get(i);
 			System.out.print("The win condition being evaluated is ");
 			for (int r = 0; r < temp.length; r++){
 				System.out.print(temp[r] + " ");
@@ -113,7 +167,6 @@ public class Board {
 			emptyTwo = null;
 			for (int j = 0; j < 3; j++)
 			{ 
-				
 				int x = temp[j].getX();
 				int y = temp[j].getY();
 				if (getElement(x,y) == 'O')
@@ -131,25 +184,49 @@ public class Board {
 					}	
 				}
 			}
-			if (current >= highest)
+			if (current == 2 && getElement(emptyOne.getX(), emptyOne.getY()) == ' ')
 			{
-				highest = current;
-				if (emptyOne != null)
+				picked = emptyOne;
+				found = true;
+			}
+			else if (current == 1)
+			{
+				if (getElement(1,1) == ' ')
 				{
-					blocks.add(emptyOne);
-					System.out.println(emptyOne + " is added to blocks");
+					picked = new Node(1,1);
+					found = true;
 				}
-				if (emptyTwo != null)
+				else 
 				{
-					blocks.add(emptyTwo);
-					System.out.println(emptyTwo + " is added to blocks");
+					if (emptyOne != null)
+					{
+						System.out.println(emptyOne + " is added to blocks");
+						blocks.add(emptyOne);
+						System.out.println(blocks.toString());
+					}
+					if (emptyTwo != null)
+					{
+						System.out.println(emptyTwo + " is added to blocks");
+						blocks.add(emptyTwo);
+						System.out.println(blocks.toString());
+					}
 				}
 			}
 		}
 		
-		System.out.println(blocks.toString());
-		Node picked = blocks.returnHighCollision();
+		while (!found){
+			picked = blocks.returnHighCollision();
+			if (getElement(picked.getX(), picked.getY()) != ' ')
+			{
+				blocks.delete(picked);
+			}
+			else
+			{
+				found = true;
+			}
+		}
 		
+		System.out.println(blocks.toString());
 		return picked;
 	}
 	
