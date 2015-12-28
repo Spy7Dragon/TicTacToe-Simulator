@@ -30,12 +30,8 @@ public class BoardForm {
 	static JLabel label;
 	static boolean playerTurn = true;
 	
-	private JFrame frame;
+	private JFrame frmTicTacToe;
 	Board theBoard = new Board();
-	/**
-	 * @wbp.nonvisual location=17,539
-	 */
-	private final JButton btnDisableboard = new JButton("disableBoard");
 	/**
 	 * Launch the application.
 	 */
@@ -44,7 +40,7 @@ public class BoardForm {
 			public void run() {
 				try {
 					BoardForm window = new BoardForm();
-					window.frame.setVisible(true);
+					window.frmTicTacToe.setVisible(true);
 					//makes the player or computer turn random
 					int turn = (int) Math.round( Math.random() * 1);
 					if (turn == 0)
@@ -150,10 +146,11 @@ public class BoardForm {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 423, 510);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmTicTacToe = new JFrame();
+		frmTicTacToe.setTitle("Tic Tac Toe Simulator");
+		frmTicTacToe.setBounds(100, 100, 423, 452);
+		frmTicTacToe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmTicTacToe.getContentPane().setLayout(null);
 		
 		btnTopLeft = new JButton("");
 		btnTopLeft.setFont(new Font("Times New Roman", Font.BOLD, 75));
@@ -167,7 +164,7 @@ public class BoardForm {
 			}
 		});
 		btnTopLeft.setBounds(10, 11, 123, 111);
-		frame.getContentPane().add(btnTopLeft);
+		frmTicTacToe.getContentPane().add(btnTopLeft);
 		
 		btnTopCenter = new JButton("");
 		btnTopCenter.setFont(new Font("Times New Roman", Font.BOLD, 75));
@@ -181,7 +178,7 @@ public class BoardForm {
 			}
 		});
 		btnTopCenter.setBounds(143, 11, 123, 111);
-		frame.getContentPane().add(btnTopCenter);
+		frmTicTacToe.getContentPane().add(btnTopCenter);
 		
 		btnTopRight = new JButton("");
 		btnTopRight.setFont(new Font("Times New Roman", Font.BOLD, 75));
@@ -195,7 +192,7 @@ public class BoardForm {
 			}
 		});
 		btnTopRight.setBounds(276, 11, 123, 111);
-		frame.getContentPane().add(btnTopRight);
+		frmTicTacToe.getContentPane().add(btnTopRight);
 		
 		btnMiddleLeft = new JButton("");
 		btnMiddleLeft.setFont(new Font("Times New Roman", Font.BOLD, 75));
@@ -209,7 +206,7 @@ public class BoardForm {
 			}
 		});
 		btnMiddleLeft.setBounds(10, 133, 123, 111);
-		frame.getContentPane().add(btnMiddleLeft);
+		frmTicTacToe.getContentPane().add(btnMiddleLeft);
 		
 		btnMiddleCenter = new JButton("");
 		btnMiddleCenter.setFont(new Font("Times New Roman", Font.BOLD, 75));
@@ -223,7 +220,7 @@ public class BoardForm {
 			}
 		});
 		btnMiddleCenter.setBounds(143, 133, 123, 111);
-		frame.getContentPane().add(btnMiddleCenter);
+		frmTicTacToe.getContentPane().add(btnMiddleCenter);
 		
 		btnMiddleRight = new JButton("");
 		btnMiddleRight.setFont(new Font("Times New Roman", Font.BOLD, 75));
@@ -237,7 +234,7 @@ public class BoardForm {
 			}
 		});
 		btnMiddleRight.setBounds(276, 133, 123, 111);
-		frame.getContentPane().add(btnMiddleRight);
+		frmTicTacToe.getContentPane().add(btnMiddleRight);
 		
 		btnBottomLeft = new JButton("");
 		btnBottomLeft.setFont(new Font("Times New Roman", Font.BOLD, 75));
@@ -251,7 +248,7 @@ public class BoardForm {
 			}
 		});
 		btnBottomLeft.setBounds(10, 255, 123, 111);
-		frame.getContentPane().add(btnBottomLeft);
+		frmTicTacToe.getContentPane().add(btnBottomLeft);
 		
 		btnBottomCenter = new JButton("");
 		btnBottomCenter.setFont(new Font("Times New Roman", Font.BOLD, 75));
@@ -265,7 +262,7 @@ public class BoardForm {
 			}
 		});
 		btnBottomCenter.setBounds(143, 255, 123, 111);
-		frame.getContentPane().add(btnBottomCenter);
+		frmTicTacToe.getContentPane().add(btnBottomCenter);
 		
 		btnBottomRight = new JButton("");
 		btnBottomRight.setFont(new Font("Times New Roman", Font.BOLD, 75));
@@ -279,24 +276,24 @@ public class BoardForm {
 			}
 		});
 		btnBottomRight.setBounds(276, 255, 123, 111);
-		frame.getContentPane().add(btnBottomRight);
+		frmTicTacToe.getContentPane().add(btnBottomRight);
 		
 		btnRestart = new JButton("Restart");
 		btnRestart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String[] args = new String[2];
-				frame.dispose();
+				frmTicTacToe.dispose();
 				playerTurn = true;
 				main(args);
 			}
 		});
 		btnRestart.setEnabled(false);
 		btnRestart.setBounds(10, 377, 89, 23);
-		frame.getContentPane().add(btnRestart);
+		frmTicTacToe.getContentPane().add(btnRestart);
 		
 		label = new JLabel("");
-		label.setBounds(109, 381, 290, 79);
-		frame.getContentPane().add(label);	
+		label.setBounds(109, 381, 290, 23);
+		frmTicTacToe.getContentPane().add(label);	
 		
 	}
 	
