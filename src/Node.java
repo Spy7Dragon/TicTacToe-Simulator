@@ -1,4 +1,7 @@
 
+/*
+ * keeps track of inputted x and y and the count for node array
+ */
 public class Node {
 	
 	private int x;

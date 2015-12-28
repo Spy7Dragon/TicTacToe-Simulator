@@ -1,18 +1,25 @@
 import java.util.ArrayList;
 
+/*
+ * the Board class keeps track of the boardElements and win Conditions
+ */
 public class Board {
 
 	/*
 	 * keeps track of the board Elements
 	 */
-	private char[][] boardElements;
-	ArrayList<Node[]> winConditions = new ArrayList<Node[]>(); 
+	private char[][] boardElements; //3 x 3 tictactoe board
+	ArrayList<Node[]> winConditions = new ArrayList<Node[]>(); //3 node win condition array
 	
 	
+	/*
+	 * constructor
+	 */
 	public Board()
 	{
 		boardElements = new char[3][3];
 		
+		//set elements to blank space
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
@@ -20,6 +27,7 @@ public class Board {
 				boardElements[i][j] = ' ';
 			}
 		}
+		//create win conditions
 		Node[] topRow = {new Node(0,0), new Node(0,1), new Node(0,2)};
 		winConditions.add(topRow);
 		Node[] middleRow = {new Node(1,0), new Node(1,1), new Node(1,2)};
@@ -38,6 +46,9 @@ public class Board {
 		winConditions.add(upSlope);		
 	}
 	
+	/*
+	 * get the element at the x and y coordinates
+	 */
 	public char getElement(int x, int y)
 	{
 		if (x >= 0 && x < 3 && y >=0 && y < 3){
@@ -49,6 +60,9 @@ public class Board {
 		}
 	}
 	
+	/*
+	 * set the element at the x and y coordinate
+	 */
 	public boolean setElement(char element, int x, int y)
 	{
 		if (x >= 0 && x < 3 && y >=0 && y < 3 && getElement(x,y) == ' ')
@@ -62,23 +76,12 @@ public class Board {
 		}
 	}
 	
+	/*
+	 * check for a winner
+	 */
 	public char checkForWinner()
 	{
-		boolean elementsLeft = false;
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				if (getElement(i,j) == ' ')
-				{
-					elementsLeft= true;
-				}
-			}
-		}
-		if (!elementsLeft)
-		{
-			return 'N';
-		}
+		//check the win conditions
 		if (getElement(0,0) != ' ' && getElement(0,0) == getElement(0,1) && getElement(0,1) == getElement(0,2)){
 			return getElement(0,0);
 		}
@@ -103,20 +106,58 @@ public class Board {
 		if (getElement(2,0) != ' ' && getElement(2,0) == getElement(1,1) && getElement(1,1) == getElement(0,2)){
 			return getElement(2,0);
 		}	
-		return '\0';
+		//check for full board
+		boolean elementsLeft = false;
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (getElement(i,j) == ' ')
+				{
+					elementsLeft= true;
+				}
+			}
+		}
+		if (!elementsLeft)
+		{
+			return 'N';
+		}
+		return '\0'; //otherwise return nullstring
 	}
 	
+	/*
+	 * chooses computers move
+	 */
 	public Node computerMove()
 	{
-		//check for O on board
 		NodeArray blocks = new NodeArray();
 		
-		Node emptyOne = new Node();
-		Node emptyTwo = new Node();
-		boolean found = false;
-		Node picked = new Node();
-		int current = 0;
-		Node[] temp = new Node[3];
+		Node emptyOne = new Node(); //first empty in the win condition
+		Node emptyTwo = new Node(); //second empty in the win condition
+		boolean found = false; //variable to whether or not the move has been found
+		Node picked = new Node(); //the picked node
+		int current = 0;	//counter for the elements in the win condition
+		Node[] temp = new Node[3]; // the temp Node array for the win condition
+		
+		//check for elements on the board
+		boolean empty = true;
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (getElement(i,j) != ' ')
+				{
+					empty = false;
+				}
+			}
+		}
+		
+		if (empty)
+		{
+			picked = new Node(1,1);
+			found = true;
+		}
+		
 		//check for computer win conditions
 		
 		for (int i = 0; i < 8 && !found; i++)
@@ -214,6 +255,7 @@ public class Board {
 			}
 		}
 		
+		//if still not found find the high collision area
 		while (!found){
 			picked = blocks.returnHighCollision();
 			if (getElement(picked.getX(), picked.getY()) != ' ')

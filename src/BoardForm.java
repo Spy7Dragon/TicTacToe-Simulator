@@ -12,6 +12,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
+import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
@@ -27,7 +28,7 @@ public class BoardForm {
 	static JButton btnBottomRight;
 	static JButton btnRestart;
 	static JLabel label;
-	boolean playerTurn = true;
+	static boolean playerTurn = true;
 	
 	private JFrame frame;
 	Board theBoard = new Board();
@@ -44,7 +45,13 @@ public class BoardForm {
 				try {
 					BoardForm window = new BoardForm();
 					window.frame.setVisible(true);
-					
+					//makes the player or computer turn random
+					int turn = (int) Math.round( Math.random() * 1);
+					if (turn == 0)
+					{
+						playerTurn = false;
+						window.stopAndCheck();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -59,11 +66,13 @@ public class BoardForm {
 		initialize();
 	}
 
+	/*
+	 * stops the user to check for winner and allow the computer to make a move
+	 */
 	public void stopAndCheck()
 	{
-		char check = theBoard.checkForWinner();
-		if (check == '\0'){
-			if (!playerTurn){
+		char check = theBoard.checkForWinner(); //variable to check for a winner
+		if (check == '\0' && !playerTurn){ //if there isn't a winner and it's the computers turn the do computer's move
 				label.setText("The computer is taking its turn");
 				Node thePicked = theBoard.computerMove();
 				label.setText("The computer has picked " + thePicked.getX() + "," + thePicked.getY());
@@ -72,29 +81,32 @@ public class BoardForm {
 				setXButton(thePicked.getX(), thePicked.getY());
 				//label.setText(theBoard.toString());
 				check = theBoard.checkForWinner();
-			}
 		}
-		else if(check == 'N')
+		else if(check == 'N') //if the board is full then the board is a tie
 		{
 			label.setText("Tie");
 			btnRestart.setEnabled(true);
 		}
-		else
+		else //else there is a winner
 		{
 			//set label for winner
 			label.setText(theBoard.checkForWinner() + " is the winner!");
 			//set restart button to true
 			btnRestart.setEnabled(true);
 		}
-		if (check == '\0')
+		if (check == '\0') //if check still nullstring after computer turn then it is player's turn
 		{
 			playerTurn = true;
 		}
-		else if (!btnRestart.isEnabled())
+		else if (!btnRestart.isEnabled()) //else check if the computer won in the last spot
 		{
 			stopAndCheck();
 		}
 	}
+	
+	/*
+	 * sets the letter X to the value of the button the computer choose
+	 */
 	public static void setXButton(int x, int y)
 	{
 		if (x == 0 && y == 0)
@@ -274,6 +286,7 @@ public class BoardForm {
 			public void actionPerformed(ActionEvent arg0) {
 				String[] args = new String[2];
 				frame.dispose();
+				playerTurn = true;
 				main(args);
 			}
 		});
