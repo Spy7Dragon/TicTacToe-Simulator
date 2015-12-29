@@ -8,7 +8,7 @@ public class Board {
 	/*
 	 * keeps track of the board Elements
 	 */
-	private char[][] boardElements; //3 x 3 tictactoe board
+	private static char[][] boardElements; //3 x 3 tictactoe board
 	ArrayList<Node[]> winConditions = new ArrayList<Node[]>(); //3 node win condition array
 	
 	
@@ -49,7 +49,7 @@ public class Board {
 	/*
 	 * get the element at the x and y coordinates
 	 */
-	public char getElement(int x, int y)
+	public static char getElement(int x, int y)
 	{
 		if (x >= 0 && x < 3 && y >=0 && y < 3){
 			return boardElements[x][y];
@@ -138,9 +138,11 @@ public class Board {
 		Node picked = new Node(); //the picked node
 		int current = 0;	//counter for the elements in the win condition
 		Node[] temp = new Node[3]; // the temp Node array for the win condition
+		int enemyMoves = 0; //checks for enemy pieces on the board
 		
 		//check for elements on the board
 		boolean empty = true;
+		Node enemyOnlyPosition = new Node();
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
@@ -149,12 +151,40 @@ public class Board {
 				{
 					empty = false;
 				}
+				if (getElement(i,j) == 'O')
+				{
+					enemyMoves++;
+					enemyOnlyPosition = new Node(i,j);
+				}
 			}
 		}
 		
 		if (empty)
 		{
+			System.out.println("The board was empty");
 			picked = new Node(1,1);
+			found = true;
+		}
+		
+		//special condition with 1 enemyposition
+		if (enemyMoves == 1)
+		{
+			System.out.println("Only one enemy");
+			Node best = new Node(0,0);
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					Node special = new Node(i, j);
+					if (!best.isCorner() && special.isCorner()){
+						best = special;
+					}
+					else if (!areNonAdjacent(best, enemyOnlyPosition) && areNonAdjacent(special, enemyOnlyPosition)){
+						best = special;
+					}
+				}
+			}
+			picked = best;
 			found = true;
 		}
 		
@@ -193,6 +223,7 @@ public class Board {
 			}
 		}
 		
+		// 
 		// check for human player win conditions
 		for (int i = 0; i < 8 && !found; i++)
 		{
@@ -256,8 +287,9 @@ public class Board {
 		}
 		
 		//if still not found find the high collision area
-		while (!found){
+		while (!found){	
 			picked = blocks.returnHighCollision();
+
 			if (getElement(picked.getX(), picked.getY()) != ' ')
 			{
 				blocks.delete(picked);
@@ -270,6 +302,24 @@ public class Board {
 		
 		System.out.println(blocks.toString());
 		return picked;
+	}
+	
+	/**
+	 * checks to see if the nodes are adjacent
+	 * @param test
+	 * @param enemy
+	 * @return
+	 */
+	public boolean areNonAdjacent(Node test, Node enemy){
+		if (test.getX() == enemy.getX() && Math.abs(test.getY() - enemy.getY()) == 1)
+		{
+			return false;
+		}
+		if (test.getY() == enemy.getY() && Math.abs(test.getX() - enemy.getX()) == 1)
+		{
+			return false;
+		}
+		return true;
 	}
 	
 	public String toString()

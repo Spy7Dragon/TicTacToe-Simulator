@@ -52,14 +52,15 @@ public class NodeArray {
 			{
 				toReturn = structure.get(i);
 			}
-			else if (isCorner(structure.get(i)) && toReturn.getCount() == structure.get(i).getCount())
+			else if (structure.get(i).isCorner() && structure.get(i).getCount() == toReturn.getCount())
 			{
 				toReturn = structure.get(i);
 			}
 		}
 		return toReturn;
 	}
-	
+
+
 	/**
 	 * maintains the encapsulation of the structure array list
 	 * @param toDelete
@@ -71,20 +72,6 @@ public class NodeArray {
 		}
 	}
 	
-	/**
-	 * checks if the node is a corner
-	 * @param checkNode
-	 * @return
-	 */
-	public boolean isCorner(Node checkNode)
-	{
-		boolean corner = false;
-		if (checkNode.getX()%2 == 0 && checkNode.getY()%2 == 0)
-		{
-			corner = true;
-		}
-		return corner;
-	}
 	
 	public String toString()
 	{

@@ -40,8 +40,24 @@ public class Node {
 		count++;
 	}
 	
+	/**
+	 * checks if the node is a corner
+	 * @param checkNode
+	 * @return
+	 */
+	public boolean isCorner()
+	{
+		boolean corner = false;
+		if (this.getX()%2 == 0 && this.getY()%2 == 0)
+		{
+			corner = true;
+		}
+		return corner;
+	}
+	
 	public String toString()
 	{
 		return getX() + "," + getY();
 	}
+	
 }
